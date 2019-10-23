@@ -2,6 +2,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#if defined(RG350)
+#include <libgen.h>
+#endif
 
 #include "port.h"
 #include "r3000a.h"
@@ -29,6 +32,8 @@
 #ifdef GPU_UNAI
 #include "gpu/gpu_unai/gpu.h"
 #endif
+
+#include "ttf.h"
 
 #ifdef RUMBLE
 #include <shake.h>
@@ -61,6 +66,7 @@ enum {
 static SDL_Surface *screen;
 unsigned short *SCREEN;
 int SCREEN_WIDTH = 640, SCREEN_HEIGHT = 480;
+TTF::Font *ttf_font;
 
 static bool pcsx4all_initted = false;
 static bool emu_running = false;
@@ -76,6 +82,8 @@ static void pcsx4all_exit(void)
 
 	// Store config to file
 	config_save();
+
+	delete ttf_font;
 
 	if (SDL_MUSTLOCK(screen))
 		SDL_UnlockSurface(screen);
@@ -1384,9 +1392,37 @@ int main (int argc, char **argv)
 			SDL_LockSurface(screen);
 
 		SCREEN = (Uint16 *) screen->pixels;
+
+#if !defined(GCW_ZERO) && defined(USE_BGR15)
+		screen->format->Rshift = 0;
+		screen->format->Gshift = 5;
+		screen->format->Bshift = 10;
+		screen->format->Rmask = 0x1Fu;
+		screen->format->Gmask = 0x1Fu<<5u;
+		screen->format->Bmask = 0x1Fu<<10u;
+		screen->format->Amask = 0;
+		screen->format->Ashift = 0;
+		screen->format_version++;
+#endif
 	} else {
 		update_window_size(320, 240);
 	}
+
+#if defined(RG350)
+    char result[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+	const char *path;
+	char fontpath[PATH_MAX];
+	if (count != -1) {
+        path = dirname(result);
+		sprintf(fontpath, "%s/mono.ttf", path);
+	} else {
+		strcpy(fontpath, "/usr/share/fonts/dejavu/DejaVuSansMono.ttf");
+	}
+    ttf_font = new TTF::Font(fontpath, 11, 8, screen);
+#elif !defined(GCW_ZERO)
+	ttf_font = new TTF::Font("mono.ttf", 11, 8, screen);
+#endif
 
 	if (argc < 2 || cdrfilename[0] == '\0') {
 		// Enter frontend main-menu:
@@ -1476,6 +1512,7 @@ void wait_ticks(unsigned s)
 #endif
 }
 
+#if defined(GCW_ZERO) && !defined(RG350)
 void port_printf(int x, int y, const char *text)
 {
 	static const unsigned char fontdata8x8[] =
@@ -1564,3 +1601,12 @@ void port_printf(int x, int y, const char *text)
 		screen += 8;
 	}
 }
+
+#else
+
+void port_printf(int x, int y, const char *text)
+{
+	ttf_font->render(screen, x, y, text);
+}
+
+#endif

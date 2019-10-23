@@ -63,7 +63,7 @@ else
 	C_ARCH  += -mno-check-zero-division
 endif
 
-CFLAGS := $(C_ARCH) -mplt -mno-shared -ggdb3 -O4 -fexpensive-optimizations -flto -DUSE_BGR15 -DTIME_IN_MSEC \
+CFLAGS := $(C_ARCH) -std=gnu++11 -mplt -mno-shared -ggdb3 -O4 -fexpensive-optimizations -flto -DUSE_BGR15 -DTIME_IN_MSEC \
 	-Wall -Wunused -Wpointer-arith \
 	-Wno-sign-compare -Wno-cast-align \
 	-Isrc -Isrc/spu/$(SPU) -D$(SPU) -Isrc/gpu/$(GPU) \
@@ -127,6 +127,7 @@ OBJS += obj/spu/$(SPU)/spu.o
 
 OBJS += obj/port/$(PORT)/port.o
 OBJS += obj/port/$(PORT)/frontend.o
+OBJS += obj/port/$(PORT)/ttf.o
 
 OBJS += obj/plugin_lib/perfmon.o
 

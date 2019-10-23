@@ -256,7 +256,7 @@ char *FileReq(char *dir, const char *ext, char *result)
 		if (num_items == 0) {
 			dirstream = opendir(cwd);
 			if (dirstream == NULL) {
-				port_printf(0, 20, "error opening directory");
+				port_printf(0, 20, "无法打开目录");
 				return NULL;
 			}
 			// read directory entries
@@ -337,7 +337,7 @@ char *FileReq(char *dir, const char *ext, char *result)
 					strcpy(dir, cwd);
 
 				video_clear();
-				port_printf(16 * 8, 120, "LOADING");
+				port_printf(16 * 8, 120, "正在读取");
 				video_flip();
 
 				FREE_LIST();
@@ -359,7 +359,7 @@ char *FileReq(char *dir, const char *ext, char *result)
 			}
 
 			if (filereq_dir_items[row + first_visible].type == 0)
-				port_printf(MENU_X, MENU_LS + (10 * row), "DIR");
+				port_printf(MENU_X, MENU_LS + (10 * row), "目录");
 			int len = strlen(filereq_dir_items[row + first_visible].name);
 			if (len > 32) {
 				snprintf(tmp_string, 16, "%s", filereq_dir_items[row + first_visible].name);
@@ -459,12 +459,12 @@ static int gui_Credits()
 }
 
 static MENUITEM gui_MainMenuItems[] = {
-	{(char *)"Load game", &gui_LoadIso, NULL, NULL, NULL},
-	{(char *)"Core settings", &gui_Settings, NULL, NULL, NULL},
-	{(char *)"GPU settings", &gui_GPUSettings, NULL, NULL, NULL},
-	{(char *)"SPU settings", &gui_SPUSettings, NULL, NULL, NULL},
+	{(char *)"加载游戏", &gui_LoadIso, NULL, NULL, NULL},
+	{(char *)"内核设置", &gui_Settings, NULL, NULL, NULL},
+	{(char *)"GPU 设置", &gui_GPUSettings, NULL, NULL, NULL},
+	{(char *)"SPU 设置", &gui_SPUSettings, NULL, NULL, NULL},
 	{(char *)"Credits", &gui_Credits, NULL, NULL, NULL},
-	{(char *)"Quit", &gui_Quit, NULL, NULL, NULL},
+	{(char *)"退出", &gui_Quit, NULL, NULL, NULL},
 	{0}
 };
 
@@ -482,7 +482,7 @@ static int gui_state_save(int slot)
 	saveslot = slot;
 
 	video_clear();
-	port_printf(160-(6*8/2), 120-(8/2), "SAVING");
+	port_printf(160-(6*8/2), 120-(8/2), "正在保存");
 	video_flip();
 
 	if (state_save(slot) < 0) {
@@ -497,8 +497,8 @@ static int gui_state_save(int slot)
 				return 0;
 			}
 
-			port_printf(160-(11*8/2), 120-12, "SAVE FAILED");
-			port_printf(160-(18*8/2), 120+12, "Out of disk space?");
+			port_printf(160-(11*8/2), 120-12, "保存失败");
+			port_printf(160-(18*8/2), 120+12, "磁盘空间不足？");
 			video_flip();
 			timer_delay(75);
 		}
@@ -575,8 +575,8 @@ static void gui_state_save_hint(int slot)
 			dst += SCREEN_WIDTH;
 		}
 	} else {
-		port_printf(320-135, 125 - 10, "No screenshot");
-		port_printf(320-135, 125,      "  available  ");
+		port_printf(320-135, 125 - 10, "当前没有");
+		port_printf(320-135, 125,      "预览图");
 	}
 
 	// Display date of last modification
@@ -630,12 +630,12 @@ static int gui_StateSave()
 {
 	const char* str_slot[10];
 	const char* str_slot_unused[10] = {
-		"Empty slot 0", "Empty slot 1", "Empty slot 2", "Empty slot 3", "Empty slot 4",
-		"Empty slot 5", "Empty slot 6", "Empty slot 7", "Empty slot 8", "Empty slot 9",
+		"空位 0", "空位 1", "空位 2", "空位 3", "空位 4",
+		"空位 5", "空位 6", "空位 7", "空位 8", "空位 9",
 	};
 	const char* str_slot_used[10] = {
-		"Used  slot 0", "Used  slot 1", "Used  slot 2", "Used  slot 3", "Used  slot 4",
-		"Used  slot 5", "Used  slot 6", "Used  slot 7", "Used  slot 8", "Used  slot 9",
+		"已使用 0", "已使用 1", "已使用 2", "已使用 3", "已使用 4",
+		"已使用 5", "已使用 6", "已使用 7", "已使用 8", "已使用 9",
 	};
 
 	// Restore last accessed position
@@ -670,7 +670,7 @@ static int gui_StateSave()
 		{NULL, NULL, NULL, NULL, NULL},
 		{NULL, NULL, NULL, NULL, NULL},
 		{NULL, NULL, NULL, NULL, NULL},
-		{(char *)"Back to main menu    ", &gui_state_save_back, NULL, NULL, NULL},
+		{(char *)"返回主菜单    ", &gui_state_save_back, NULL, NULL, NULL},
 		{0}
 	};
 
@@ -783,8 +783,8 @@ static void gui_state_load_hint(int slot)
 			dst += SCREEN_WIDTH;
 		}
 	} else {
-		port_printf(320-135, 125 - 10, "No screenshot");
-		port_printf(320-135, 125,      "  available  ");
+		port_printf(320-135, 125 - 10, "当前没有");
+		port_printf(320-135, 125,      "预览图");
 	}
 
 	// Display date of last modification
@@ -837,8 +837,8 @@ static int gui_state_load_back()
 static int gui_StateLoad()
 {
 	const char* str_slot[10] = {
-		"Load slot 0", "Load slot 1", "Load slot 2", "Load slot 3", "Load slot 4",
-		"Load slot 5", "Load slot 6", "Load slot 7", "Load slot 8", "Load slot 9",
+		"加载存档 0", "加载存档 1", "加载存档 2", "加载存档 3", "加载存档 4",
+		"加载存档 5", "加载存档 6", "加载存档 7", "加载存档 8", "加载存档 9",
 	};
 
 	// Restore last accessed position
@@ -887,7 +887,7 @@ static int gui_StateLoad()
 		{NULL, NULL, NULL, NULL, NULL},
 		{NULL, NULL, NULL, NULL, NULL},
 		{NULL, NULL, NULL, NULL, NULL},
-		{(char *)"Back to main menu    ", &gui_state_load_back, NULL, NULL, NULL},
+		{(char *)"返回主菜单    ", &gui_state_load_back, NULL, NULL, NULL},
 		{0}
 	};
 
@@ -943,7 +943,7 @@ static int gui_select_multicd(bool swapping_cd)
 		}
 
 		if (!swapping_cd)
-			port_printf(MENU_X, MENU_Y, "Multi-CD image detected:");
+			port_printf(MENU_X, MENU_Y, "检测到 多CD 镜像:");
 
 		char tmp_string[41];
 		for (int row=0; row < num_rows; ++row) {
@@ -956,7 +956,7 @@ static int gui_select_multicd(bool swapping_cd)
 
 			if (swapping_cd && (row == cdrIsoMultidiskSelect)) {
 				// print indication of which CD is already inserted
-				strcat(tmp_string, " (inserted)");
+				strcat(tmp_string, " (已插入)");
 			}
 
 			port_printf(MENU_X + (8 * 5), MENU_LS + 10 + (10 * row), tmp_string);
@@ -1057,25 +1057,25 @@ static int gui_swap_cd(void)
 
 static MENUITEM gui_GameMenuItems[] =
 {
-  {(char *)"Swap CD", &gui_swap_cd, NULL, NULL, NULL},
-  {(char *)"Load state", &gui_StateLoad, NULL, NULL, NULL},
-  {(char *)"Save state", &gui_StateSave, NULL, NULL, NULL},
-  {(char *)"GPU settings", &gui_GPUSettings, NULL, NULL, NULL},
-  {(char *)"SPU settings", &gui_SPUSettings, NULL, NULL, NULL},
-  {(char *)"Core settings", &gui_Settings, NULL, NULL, NULL},
-  {(char *)"Quit", &gui_Quit, NULL, NULL, NULL},
+  {(char *)"切换 CD", &gui_swap_cd, NULL, NULL, NULL},
+  {(char *)"加载即时存档", &gui_StateLoad, NULL, NULL, NULL},
+  {(char *)"保存即时存档", &gui_StateSave, NULL, NULL, NULL},
+  {(char *)"GPU 设置", &gui_GPUSettings, NULL, NULL, NULL},
+  {(char *)"SPU 设置", &gui_SPUSettings, NULL, NULL, NULL},
+  {(char *)"内核设置", &gui_Settings, NULL, NULL, NULL},
+  {(char *)"退出", &gui_Quit, NULL, NULL, NULL},
   {0}
 };
 static MENUITEM gui_GameMenuItems_WithCheats[] =
 {
-  {(char *)"Swap CD", &gui_swap_cd, NULL, NULL, NULL},
-  {(char *)"Load state", &gui_StateLoad, NULL, NULL, NULL},
-  {(char *)"Save state", &gui_StateSave, NULL, NULL, NULL},
-  {(char *)"GPU settings", &gui_GPUSettings, NULL, NULL, NULL},
-  {(char *)"SPU settings", &gui_SPUSettings, NULL, NULL, NULL},
-  {(char *)"Core settings", &gui_Settings, NULL, NULL, NULL},
-  {(char *)"Cheats", &gui_Cheats, NULL, NULL, NULL},
-  {(char *)"Quit", &gui_Quit, NULL, NULL, NULL},
+  {(char *)"切换 CD", &gui_swap_cd, NULL, NULL, NULL},
+  {(char *)"加载即时存档", &gui_StateLoad, NULL, NULL, NULL},
+  {(char *)"保存即时存档", &gui_StateSave, NULL, NULL, NULL},
+  {(char *)"GPU 设置", &gui_GPUSettings, NULL, NULL, NULL},
+  {(char *)"SPU 设置", &gui_SPUSettings, NULL, NULL, NULL},
+  {(char *)"内核设置", &gui_Settings, NULL, NULL, NULL},
+  {(char *)"金手指", &gui_Cheats, NULL, NULL, NULL},
+  {(char *)"退出", &gui_Quit, NULL, NULL, NULL},
   {0}
 };
 
@@ -1098,7 +1098,7 @@ static int emu_alter(u32 keys)
 static char *emu_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.Cpu ? "int" : "rec");
+	sprintf(buf, "%s", Config.Cpu ? "解释器" : "重编译");
 	return buf;
 }
 
@@ -1137,7 +1137,7 @@ static int bios_alter(u32 keys)
 static char *bios_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.HLE ? "on" : "off");
+	sprintf(buf, "%s", Config.HLE ? "开" : "关");
 	return buf;
 }
 
@@ -1174,13 +1174,13 @@ static int RCntFix_alter(u32 keys)
 static char *SlowBoot_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.SlowBoot ? "off" : "on");
+	sprintf(buf, "%s", Config.SlowBoot ? "关" : "开");
 	return buf;
 }
 
 static void SlowBoot_hint()
 {
-	port_printf(7 * 8, 10 * 8, "Skip BIOS logos at startup");
+	port_printf(7 * 8, 10 * 8, "跳过开头的BIOS画面");
 }
 
 static int SlowBoot_alter(u32 keys)
@@ -1207,13 +1207,13 @@ static int AnalogArrow_alter(u32 keys)
 
 static void AnalogArrow_hint()
 {
-	port_printf(6 * 8, 10 * 8, "Analog Stick -> Arrow Keys");
+	port_printf(6 * 8, 10 * 8, "左摇杆模拟十字键输入");
 }
 
 static char* AnalogArrow_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.AnalogArrow ? "on" : "off");
+	sprintf(buf, "%s", Config.AnalogArrow ? "开" : "关");
 	return buf;
 }
 
@@ -1232,7 +1232,7 @@ static int Analog_Mode_alter(u32 keys)
 
 static void Analog_Mode_hint()
 {
-	port_printf(6 * 8, 10 * 8, "Analog Mode");
+	port_printf(6 * 8, 10 * 8, "类比摇杆输入模式");
 }
 
 static char* Analog_Mode_show()
@@ -1240,11 +1240,11 @@ static char* Analog_Mode_show()
 	static char buf[16] = "\0";
 	extern void Set_Controller_Mode();
 	switch (Config.AnalogMode) {
-	case 0: sprintf(buf, "Digital");
+	case 0: sprintf(buf, "数字");
 		break;
-	case 1: sprintf(buf, "DualAnalog");
+	case 1: sprintf(buf, "双类比模拟");
 		break;
-	case 2: sprintf(buf, "DualShock");
+	case 2: sprintf(buf, "双类比震动");
 		break;
 	}
 	Set_Controller_Mode();
@@ -1255,13 +1255,13 @@ static char* Analog_Mode_show()
 static char *RCntFix_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.RCntFix ? "on" : "off");
+	sprintf(buf, "%s", Config.RCntFix ? "开" : "关");
 	return buf;
 }
 
 static void RCntFix_hint()
 {
-	port_printf(2 * 8 - 4, 10 * 8, "Parasite Eve 2, Vandal Hearts 1/2 Fix");
+	port_printf(2 * 8 - 4, 10 * 8, "寄生前夜2, 汪达尔之心 1/2 修正");
 }
 
 static int VSyncWA_alter(u32 keys)
@@ -1277,13 +1277,13 @@ static int VSyncWA_alter(u32 keys)
 
 static void VSyncWA_hint()
 {
-	port_printf(6 * 8, 10 * 8, "InuYasha Sengoku Battle Fix");
+	port_printf(6 * 8, 10 * 8, "犬夜叉战国伽合战修正");
 }
 
 static char *VSyncWA_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.VSyncWA ? "on" : "off");
+	sprintf(buf, "%s", Config.VSyncWA ? "开" : "关");
 	return buf;
 }
 
@@ -1365,26 +1365,26 @@ static int settings_defaults()
 
 static MENUITEM gui_SettingsItems[] = {
 #ifdef PSXREC
-	{(char *)"Emulation core     ", NULL, &emu_alter, &emu_show, NULL},
-	{(char *)"Cycle multiplier   ", NULL, &cycle_alter, &cycle_show, NULL},
+	{(char *)"模拟器内核     ", NULL, &emu_alter, &emu_show, NULL},
+	{(char *)"时钟周期倍数   ", NULL, &cycle_alter, &cycle_show, NULL},
 #endif
-	{(char *)"HLE emulated BIOS  ", NULL, &bios_alter, &bios_show, NULL},
-	{(char *)"Set BIOS file      ", &bios_set, NULL, &bios_file_show, NULL},
-	{(char *)"Skip BIOS logos    ", NULL, &SlowBoot_alter, &SlowBoot_show, &SlowBoot_hint},
-	{(char *)"Map L-stick to Dpad", NULL, &AnalogArrow_alter, &AnalogArrow_show, &AnalogArrow_hint},
-	{(char *)"Analog Mode        ", NULL, &Analog_Mode_alter, &Analog_Mode_show, &Analog_Mode_hint},
-	{(char *)"RCntFix            ", NULL, &RCntFix_alter, &RCntFix_show, &RCntFix_hint},
-	{(char *)"VSyncWA            ", NULL, &VSyncWA_alter, &VSyncWA_show, &VSyncWA_hint},
-	{(char *)"Memory card Slot1  ", NULL, &McdSlot1_alter, &McdSlot1_show, NULL},
-	{(char *)"Memory card Slot2  ", NULL, &McdSlot2_alter, &McdSlot2_show, NULL},
-	{(char *)"Restore defaults     ", &settings_defaults, NULL, NULL, NULL},
+	{(char *)"HLE BIOS       ", NULL, &bios_alter, &bios_show, NULL},
+	{(char *)"设置BIOS文件   ", &bios_set, NULL, &bios_file_show, NULL},
+	{(char *)"跳过BIOS LOGO  ", NULL, &SlowBoot_alter, &SlowBoot_show, &SlowBoot_hint},
+	{(char *)"摇杆模拟十字键 ", NULL, &AnalogArrow_alter, &AnalogArrow_show, &AnalogArrow_hint},
+	{(char *)"类比模式       ", NULL, &Analog_Mode_alter, &Analog_Mode_show, &Analog_Mode_hint},
+	{(char *)"RCnt修正       ", NULL, &RCntFix_alter, &RCntFix_show, &RCntFix_hint},
+	{(char *)"VSync等待      ", NULL, &VSyncWA_alter, &VSyncWA_show, &VSyncWA_hint},
+	{(char *)"内存卡1        ", NULL, &McdSlot1_alter, &McdSlot1_show, NULL},
+	{(char *)"内存卡2        ", NULL, &McdSlot2_alter, &McdSlot2_show, NULL},
+	{(char *)"恢复默认设置   ", &settings_defaults, NULL, NULL, NULL},
 	{NULL, NULL, NULL, NULL, NULL},
-	{(char *)"Back to main menu  ", &settings_back, NULL, NULL, NULL},
+	{(char *)"返回主菜单     ", &settings_back, NULL, NULL, NULL},
 	{0}
 };
 
 #define SET_SIZE ((sizeof(gui_SettingsItems) / sizeof(MENUITEM)) - 1)
-static MENU gui_SettingsMenu = { SET_SIZE, 0, 56, 102, (MENUITEM *)&gui_SettingsItems };
+static MENU gui_SettingsMenu = { SET_SIZE, 0, 56, 93, (MENUITEM *)&gui_SettingsItems };
 
 static int fps_alter(u32 keys)
 {
@@ -1399,7 +1399,7 @@ static int fps_alter(u32 keys)
 static char *fps_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.ShowFps == true ? "on" : "off");
+	sprintf(buf, "%s", Config.ShowFps == true ? "开" : "关");
 	return buf;
 }
 
@@ -1417,7 +1417,7 @@ static int framelimit_alter(u32 keys)
 static char *framelimit_show()
 {
 	int idx = Config.FrameLimit ? 1 : 0;
-	const char* str[] = { "off", "on" };
+	const char* str[] = { "关", "开" };
 	return (char*)str[idx];
 }
 
@@ -1452,7 +1452,7 @@ static int frameskip_alter(u32 keys)
 
 static char *frameskip_show()
 {
-	const char* str[] = { "auto", "off", "1", "2", "3" };
+	const char* str[] = { "自动", "关", "1", "2", "3" };
 
 	// Config.FrameSkip val range is -1..3
 	int fs = Config.FrameSkip + 1;
@@ -1474,7 +1474,7 @@ static int videoscaling_alter(u32 keys)
 }
 
 static char *videoscaling_show() {
-	const char* str[] = {"hardware", "nearest"};
+	const char* str[] = {"硬件", "软件(最近)"};
 	int vs = Config.VideoScaling;
 	if (vs < 0) vs = 0;
 	else if (vs > 1) vs = 1;
@@ -1484,10 +1484,10 @@ static char *videoscaling_show() {
 static void videoscaling_hint() {
 	switch(Config.VideoScaling) {
 	case 0:
-		port_printf(4 * 8, 10 * 8, "Hardware, POWER+A to switch aspect");
+		port_printf(4 * 8, 10 * 8, "硬件, 电源键+A切换纵横比");
 		break;
 	case 1:
-		port_printf(7 * 8, 10 * 8, "Nearest filter");
+		port_printf(7 * 8, 10 * 8, "软件取最近点");
 		break;
 	}
 }
@@ -1510,7 +1510,7 @@ static int interlace_alter(u32 keys)
 static char *interlace_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.ilace_force == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.ilace_force == true ? "开" : "关");
 	return buf;
 }
 
@@ -1530,7 +1530,7 @@ static int dithering_alter(u32 keys)
 static char *dithering_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.dithering == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.dithering == true ? "开" : "关");
 	return buf;
 }
 
@@ -1550,7 +1550,7 @@ static int lighting_alter(u32 keys)
 static char *lighting_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.lighting == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.lighting == true ? "开" : "关");
 	return buf;
 }
 
@@ -1570,7 +1570,7 @@ static int fast_lighting_alter(u32 keys)
 static char *fast_lighting_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.fast_lighting == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.fast_lighting == true ? "开" : "关");
 	return buf;
 }
 
@@ -1590,7 +1590,7 @@ static int blending_alter(u32 keys)
 static char *blending_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.blending == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.blending == true ? "开" : "关");
 	return buf;
 }
 
@@ -1611,7 +1611,7 @@ static int pixel_skip_alter(u32 keys)
 static char *pixel_skip_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", gpu_unai_config_ext.pixel_skip == true ? "on" : "off");
+	sprintf(buf, "%s", gpu_unai_config_ext.pixel_skip == true ? "开" : "关");
 	return buf;
 }
 */
@@ -1640,24 +1640,24 @@ static int gpu_settings_defaults()
 
 static MENUITEM gui_GPUSettingsItems[] = {
 	/* Not working with gpulib yet */
-	{(char *)"Show FPS             ", NULL, &fps_alter, &fps_show, NULL},
-	{(char *)"Frame limiter        ", NULL, &framelimit_alter, &framelimit_show, NULL},
+	{(char *)"显示 FPS        ", NULL, &fps_alter, &fps_show, NULL},
+	{(char *)"帧率限制        ", NULL, &framelimit_alter, &framelimit_show, NULL},
 #ifdef USE_GPULIB
 	/* Only working with gpulib */
-	{(char *)"Frame skip           ", NULL, &frameskip_alter, &frameskip_show, NULL},
-	{(char *)"Video Scaling        ", NULL, &videoscaling_alter, &videoscaling_show, videoscaling_hint},
+	{(char *)"跳帧            ", NULL, &frameskip_alter, &frameskip_show, NULL},
+	{(char *)"显示缩放        ", NULL, &videoscaling_alter, &videoscaling_show, videoscaling_hint},
 #endif
 #ifdef GPU_UNAI
-	{(char *)"Interlace            ", NULL, &interlace_alter, &interlace_show, NULL},
-	{(char *)"Dithering            ", NULL, &dithering_alter, &dithering_show, NULL},
-	{(char *)"Lighting             ", NULL, &lighting_alter, &lighting_show, NULL},
-	{(char *)"Fast lighting        ", NULL, &fast_lighting_alter, &fast_lighting_show, NULL},
-	{(char *)"Blending             ", NULL, &blending_alter, &blending_show, NULL},
+	{(char *)"交错渲染        ", NULL, &interlace_alter, &interlace_show, NULL},
+	{(char *)"抖动            ", NULL, &dithering_alter, &dithering_show, NULL},
+	{(char *)"光照            ", NULL, &lighting_alter, &lighting_show, NULL},
+	{(char *)"快速光照        ", NULL, &fast_lighting_alter, &fast_lighting_show, NULL},
+	{(char *)"混合渲染        ", NULL, &blending_alter, &blending_show, NULL},
 	// {(char *)"Pixel skip           ", NULL, &pixel_skip_alter, &pixel_skip_show, NULL},
 #endif
-	{(char *)"Restore defaults     ", &gpu_settings_defaults, NULL, NULL, NULL},
+	{(char *)"恢复默认设置    ", &gpu_settings_defaults, NULL, NULL, NULL},
 	{NULL, NULL, NULL, NULL, NULL},
-	{(char *)"Back to main menu    ", &settings_back, NULL, NULL, NULL},
+	{(char *)"返回主菜单      ", &settings_back, NULL, NULL, NULL},
 	{0}
 };
 
@@ -1678,7 +1678,7 @@ static int xa_alter(u32 keys)
 static char *xa_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.Xa ? "off" : "on");
+	sprintf(buf, "%s", Config.Xa ? "关" : "开");
 	return buf;
 }
 
@@ -1696,7 +1696,7 @@ static int cdda_alter(u32 keys)
 static char *cdda_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.Cdda ? "off" : "on");
+	sprintf(buf, "%s", Config.Cdda ? "关" : "开");
 	return buf;
 }
 
@@ -1716,7 +1716,7 @@ static char *forcedxa_show()
 	if (Config.ForcedXAUpdates < 0) Config.ForcedXAUpdates = 0;
 	else if (Config.ForcedXAUpdates > 7) Config.ForcedXAUpdates = 7;
 
-	const char* str[] = { "off", "auto", "1", "2", "4", "8", "16", "32" };
+	const char* str[] = { "关", "自动", "1", "2", "4", "8", "16", "32" };
 	return (char*)str[Config.ForcedXAUpdates];
 }
 
@@ -1734,7 +1734,7 @@ static int syncaudio_alter(u32 keys)
 static char *syncaudio_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.SyncAudio ? "on" : "off");
+	sprintf(buf, "%s", Config.SyncAudio ? "开" : "关");
 	return buf;
 }
 
@@ -1772,7 +1772,7 @@ static int spuirq_alter(u32 keys)
 static char *spuirq_show()
 {
 	static char buf[16] = "\0";
-	sprintf(buf, "%s", Config.SpuIrq ? "on" : "off");
+	sprintf(buf, "%s", Config.SpuIrq ? "开" : "关");
 	return buf;
 }
 
@@ -1792,10 +1792,10 @@ static char *interpolation_show()
 {
 	static char buf[16] = "\0";
 	switch (spu_config.iUseInterpolation) {
-	case 0: strcpy(buf, "none"); break;
-	case 1: strcpy(buf, "simple"); break;
-	case 2: strcpy(buf, "gaussian"); break;
-	case 3: strcpy(buf, "cubic"); break;
+	case 0: strcpy(buf, "无"); break;
+	case 1: strcpy(buf, "简单"); break;
+	case 2: strcpy(buf, "高斯"); break;
+	case 3: strcpy(buf, "立方"); break;
 	default: buf[0] = '\0'; break;
 	}
 	return buf;
@@ -1815,7 +1815,7 @@ static int reverb_alter(u32 keys)
 static char *reverb_show()
 {
 	int val = spu_config.iUseReverb ? 1 : 0;
-	const char* str[] = { "off", "on" };
+	const char* str[] = { "关", "开" };
 	return (char*)str[val];
 }
 
@@ -1859,20 +1859,20 @@ static int spu_settings_defaults()
 }
 
 static MENUITEM gui_SPUSettingsItems[] = {
-	{(char *)"XA audio             ", NULL, &xa_alter, &xa_show, NULL},
-	{(char *)"CDDA audio           ", NULL, &cdda_alter, &cdda_show, NULL},
-	{(char *)"Audio sync           ", NULL, &syncaudio_alter, &syncaudio_show, NULL},
-	{(char *)"SPU updates per frame", NULL, &spuupdatefreq_alter, &spuupdatefreq_show, NULL},
-	{(char *)"Forced XA updates    ", NULL, &forcedxa_alter, &forcedxa_show, NULL},
-	{(char *)"IRQ fix              ", NULL, &spuirq_alter, &spuirq_show, NULL},
+	{(char *)"XA 音频          ", NULL, &xa_alter, &xa_show, NULL},
+	{(char *)"CDDA 音频        ", NULL, &cdda_alter, &cdda_show, NULL},
+	{(char *)"音频同步         ", NULL, &syncaudio_alter, &syncaudio_show, NULL},
+	{(char *)"SPU 更新帧率     ", NULL, &spuupdatefreq_alter, &spuupdatefreq_show, NULL},
+	{(char *)"强制 XA 更新     ", NULL, &forcedxa_alter, &forcedxa_show, NULL},
+	{(char *)"IRQ 修正         ", NULL, &spuirq_alter, &spuirq_show, NULL},
 #ifdef SPU_PCSXREARMED
-	{(char *)"Interpolation        ", NULL, &interpolation_alter, &interpolation_show, NULL},
-	{(char *)"Reverb               ", NULL, &reverb_alter, &reverb_show, NULL},
-	{(char *)"Master volume        ", NULL, &volume_alter, &volume_show, NULL},
+	{(char *)"插补             ", NULL, &interpolation_alter, &interpolation_show, NULL},
+	{(char *)"混响             ", NULL, &reverb_alter, &reverb_show, NULL},
+	{(char *)"主音量           ", NULL, &volume_alter, &volume_show, NULL},
 #endif
-	{(char *)"Restore defaults     ", &spu_settings_defaults, NULL, NULL, NULL},
+	{(char *)"恢复默认设置     ", &spu_settings_defaults, NULL, NULL, NULL},
 	{NULL, NULL, NULL, NULL, NULL},
-	{(char *)"Back to main menu    ", &settings_back, NULL, NULL, NULL},
+	{(char *)"返回主菜单       ", &settings_back, NULL, NULL, NULL},
 	{0}
 };
 
@@ -2005,10 +2005,10 @@ static void ShowMenu(MENU *menu)
 #else
 	port_printf(8 * 8, 10, "pcsx4all 2.4 for GCW-Zero");
 #endif
-	port_printf(4 * 8, 20, "Built on " __DATE__ " at " __TIME__);
+	port_printf(4 * 8, 20, "   构建于 " __DATE__ " at " __TIME__);
 	if (CdromId[0]) {
 		// add disc id display for confirming cheat filename
-		port_printf(11 * 8, 35, "Disc ID:");
+		port_printf(11 * 8, 35, "光碟 ID:");
 		port_printf(20 * 8, 35, CdromId);
 	}
 }

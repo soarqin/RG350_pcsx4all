@@ -23,6 +23,10 @@ FLIST="pcsx4all"
 FLIST="${FLIST} default.gcw0.desktop"
 FLIST="${FLIST} src/port/sdl/pcsxr-icon-small.png"
 
+if [ -f mono.ttf ]; then
+FLIST="${FLIST} mono.ttf"
+fi
+
 rm -f ${OPK_NAME}
 mksquashfs ${FLIST} ${OPK_NAME} -all-root -no-xattrs -noappend -no-exports
 

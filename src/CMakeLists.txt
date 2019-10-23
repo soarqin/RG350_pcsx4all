@@ -21,6 +21,7 @@ set(SRC_FILES
     spu/${SPU}/spu.c
     port/${PORT}/port.cpp
     port/${PORT}/frontend.cpp
+    port/${PORT}/ttf.cpp
     )
 
 if(USE_GPULIB)
