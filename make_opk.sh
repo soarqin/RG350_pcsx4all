@@ -22,6 +22,12 @@ EOF
 FLIST="pcsx4all"
 FLIST="${FLIST} default.gcw0.desktop"
 FLIST="${FLIST} src/port/sdl/pcsxr-icon-small.png"
+if [ -f translations/locales ]; then
+  FLIST="${FLIST} translations/locales"
+  if [ -d locale ]; then
+    FLIST="${FLIST} locale"
+  fi
+fi
 
 rm -f ${OPK_NAME}
 mksquashfs ${FLIST} ${OPK_NAME} -all-root -no-xattrs -noappend -no-exports

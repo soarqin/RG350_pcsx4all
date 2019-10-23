@@ -1,0 +1,348 @@
+# Chinese translations for pcsx4all package
+# pcsx4all 軟體包的繁體中文翻譯.
+# Copyright (C) 2019 pcsx4all Team
+# This file is distributed under the same license as the pcsx4all package.
+# Soar Qin <soarchin@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pcsx4all 2.4\n"
+"Report-Msgid-Bugs-To: soarchin@gmail.com\n"
+"POT-Creation-Date: 2019-10-30 20:10+0800\n"
+"PO-Revision-Date: 2019-10-30 01:33+0800\n"
+"Last-Translator: Soar Qin <soarchin@gmail.com>\n"
+"Language-Team: Chinese (traditional)\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/port/sdl/frontend.cpp:55
+msgid "on"
+msgstr "開啟"
+
+#: src/port/sdl/frontend.cpp:55 src/port/sdl/frontend.cpp:1347
+#: src/port/sdl/frontend.cpp:1589
+msgid "off"
+msgstr "關閉"
+
+#: src/port/sdl/frontend.cpp:268
+msgid "error opening directory"
+msgstr "無法打開資料夾"
+
+#: src/port/sdl/frontend.cpp:349
+msgid "LOADING"
+msgstr "正在加載"
+
+#: src/port/sdl/frontend.cpp:371
+msgid "DIR"
+msgstr "資料夾"
+
+#: src/port/sdl/frontend.cpp:481
+msgid "SAVING"
+msgstr "正在保存"
+
+#: src/port/sdl/frontend.cpp:496
+msgid "SAVE FAILED"
+msgstr "保存失敗"
+
+#: src/port/sdl/frontend.cpp:497
+msgid "Out of disk space?"
+msgstr "磁碟空間不足？"
+
+#: src/port/sdl/frontend.cpp:545
+msgid "No screenshot"
+msgstr "沒有"
+
+#: src/port/sdl/frontend.cpp:546
+msgid "  available  "
+msgstr "截圖"
+
+#: src/port/sdl/frontend.cpp:642
+#, c-format
+msgid "Used  slot %d"
+msgstr "已用存檔位 %d"
+
+#: src/port/sdl/frontend.cpp:644
+#, c-format
+msgid "Empty slot %d"
+msgstr "空閒存檔位 %d"
+
+#: src/port/sdl/frontend.cpp:827
+#, c-format
+msgid "Load slot %d"
+msgstr "加載存檔 %d"
+
+#: src/port/sdl/frontend.cpp:907
+msgid "Multi-CD image detected:"
+msgstr "檢測到多CD鏡像:"
+
+#: src/port/sdl/frontend.cpp:916
+#, c-format
+msgid "CD %d"
+msgstr ""
+
+#. print indication of which CD is already inserted
+#: src/port/sdl/frontend.cpp:920
+msgid " (inserted)"
+msgstr " (已插入)"
+
+#: src/port/sdl/frontend.cpp:1033
+msgid "int"
+msgstr "解釋器"
+
+#: src/port/sdl/frontend.cpp:1033
+msgid "rec"
+msgstr "重編譯"
+
+#: src/port/sdl/frontend.cpp:1113
+msgid "Skip BIOS logos at startup"
+msgstr "啟動遊戲時跳過BIOS LOGO"
+
+#: src/port/sdl/frontend.cpp:1140
+msgid "Analog Stick -> Arrow Keys"
+msgstr "搖杆模擬方向鍵"
+
+#: src/port/sdl/frontend.cpp:1163 src/port/sdl/frontend.cpp:1753
+msgid "Analog Mode"
+msgstr "類比模式"
+
+#: src/port/sdl/frontend.cpp:1171
+#, c-format
+msgid "Digital"
+msgstr "數字"
+
+#: src/port/sdl/frontend.cpp:1173
+#, c-format
+msgid "DualAnalog"
+msgstr "雙類比搖杆"
+
+#: src/port/sdl/frontend.cpp:1175
+#, c-format
+msgid "DualShock"
+msgstr "雙震動搖杆"
+
+#: src/port/sdl/frontend.cpp:1190
+msgid "Parasite Eve 2, Vandal Hearts 1/2 Fix"
+msgstr "寄生前夜2 汪達爾之心1/2修正"
+
+#: src/port/sdl/frontend.cpp:1347 src/port/sdl/frontend.cpp:1589
+msgid "auto"
+msgstr "自動"
+
+#: src/port/sdl/frontend.cpp:1369
+msgid "hardware"
+msgstr "硬體"
+
+#: src/port/sdl/frontend.cpp:1369
+msgid "nearest"
+msgstr "軟體最近點"
+
+#: src/port/sdl/frontend.cpp:1379
+msgid "Hardware, POWER+A to switch aspect"
+msgstr "硬體渲染，電源+A切換全屏比例"
+
+#: src/port/sdl/frontend.cpp:1382
+msgid "Nearest filter"
+msgstr "使用最近點過濾器"
+
+#: src/port/sdl/frontend.cpp:1660
+msgid "none"
+msgstr "無"
+
+#: src/port/sdl/frontend.cpp:1661
+msgid "simple"
+msgstr "簡單"
+
+#: src/port/sdl/frontend.cpp:1662
+msgid "gaussian"
+msgstr "高斯"
+
+#: src/port/sdl/frontend.cpp:1663
+msgid "cubic"
+msgstr "立方"
+
+#: src/port/sdl/frontend.cpp:1746
+msgid "Emulation core"
+msgstr "模擬核心"
+
+#: src/port/sdl/frontend.cpp:1747
+msgid "Cycle multiplier"
+msgstr "時鐘周期倍率"
+
+#: src/port/sdl/frontend.cpp:1749
+msgid "HLE emulated BIOS"
+msgstr "HLE模擬BIOS"
+
+#: src/port/sdl/frontend.cpp:1750
+msgid "Set BIOS file"
+msgstr "設置BIOS文件"
+
+#: src/port/sdl/frontend.cpp:1751
+msgid "Skip BIOS logos"
+msgstr "跳過BIOS LOGO"
+
+#: src/port/sdl/frontend.cpp:1752
+msgid "Map L-stick to Dpad"
+msgstr "左搖杆映射方向鍵"
+
+#: src/port/sdl/frontend.cpp:1754
+msgid "RCntFix"
+msgstr "RCnt修正"
+
+#: src/port/sdl/frontend.cpp:1755
+msgid "VSyncWA"
+msgstr "等待垂直同步"
+
+#: src/port/sdl/frontend.cpp:1756
+msgid "Memory card Slot1"
+msgstr "記憶卡槽1"
+
+#: src/port/sdl/frontend.cpp:1757
+msgid "Memory card Slot2"
+msgstr "記憶卡槽2"
+
+#: src/port/sdl/frontend.cpp:1758 src/port/sdl/frontend.cpp:1791
+#: src/port/sdl/frontend.cpp:1817
+msgid "Restore defaults"
+msgstr "恢復默認設置"
+
+#. Not working with gpulib yet
+#: src/port/sdl/frontend.cpp:1775
+msgid "Show FPS"
+msgstr "顯示 FPS"
+
+#: src/port/sdl/frontend.cpp:1776
+msgid "Frame limiter"
+msgstr "幀率限制"
+
+#. Only working with gpulib
+#: src/port/sdl/frontend.cpp:1779
+msgid "Frame skip"
+msgstr "跳幀"
+
+#: src/port/sdl/frontend.cpp:1780
+msgid "Video Scaling"
+msgstr "輸出縮放"
+
+#: src/port/sdl/frontend.cpp:1783
+msgid "NTSC Resolution Fix"
+msgstr "NTSC解析度修正"
+
+#: src/port/sdl/frontend.cpp:1784
+msgid "Interlace"
+msgstr "掃描線"
+
+#: src/port/sdl/frontend.cpp:1785
+msgid "Dithering"
+msgstr "抖動"
+
+#: src/port/sdl/frontend.cpp:1786
+msgid "Lighting"
+msgstr "光照"
+
+#: src/port/sdl/frontend.cpp:1787
+msgid "Fast lighting"
+msgstr "快速光照"
+
+#: src/port/sdl/frontend.cpp:1788
+msgid "Blending"
+msgstr "混合渲染"
+
+#: src/port/sdl/frontend.cpp:1806
+msgid "XA audio"
+msgstr "XA 音頻"
+
+#: src/port/sdl/frontend.cpp:1807
+msgid "CDDA audio"
+msgstr "CDDA 音頻"
+
+#: src/port/sdl/frontend.cpp:1808
+msgid "Audio sync"
+msgstr "音頻同步"
+
+#: src/port/sdl/frontend.cpp:1809
+msgid "SPU updates per frame"
+msgstr "SPU 更新幀率"
+
+#: src/port/sdl/frontend.cpp:1810
+msgid "Forced XA updates"
+msgstr "強制 XA 更新"
+
+#: src/port/sdl/frontend.cpp:1811
+msgid "IRQ fix"
+msgstr "IRQ 修正"
+
+#: src/port/sdl/frontend.cpp:1813
+msgid "Interpolation"
+msgstr "插補"
+
+#: src/port/sdl/frontend.cpp:1814
+msgid "Reverb"
+msgstr "混響"
+
+#: src/port/sdl/frontend.cpp:1815
+msgid "Master volume"
+msgstr "主音量"
+
+#. add disc id display for confirming cheat filename
+#: src/port/sdl/frontend.cpp:1909
+msgid "Disc ID:"
+msgstr "光碟 ID:"
+
+#: src/port/sdl/frontend.cpp:2023
+msgid "English"
+msgstr "英語"
+
+#: src/port/sdl/frontend.cpp:2030
+msgid "Load game"
+msgstr "加載遊戲"
+
+#: src/port/sdl/frontend.cpp:2031 src/port/sdl/frontend.cpp:2056
+#: src/port/sdl/frontend.cpp:2068
+msgid "Core settings"
+msgstr "內核設置"
+
+#: src/port/sdl/frontend.cpp:2032 src/port/sdl/frontend.cpp:2054
+#: src/port/sdl/frontend.cpp:2066
+msgid "GPU settings"
+msgstr "GPU 設置"
+
+#: src/port/sdl/frontend.cpp:2033 src/port/sdl/frontend.cpp:2055
+#: src/port/sdl/frontend.cpp:2067
+msgid "SPU settings"
+msgstr "SPU 設置"
+
+#: src/port/sdl/frontend.cpp:2034
+msgid "Credits"
+msgstr "CREDITS"
+
+#: src/port/sdl/frontend.cpp:2035 src/port/sdl/frontend.cpp:2057
+#: src/port/sdl/frontend.cpp:2070
+msgid "Language"
+msgstr "語言"
+
+#: src/port/sdl/frontend.cpp:2036 src/port/sdl/frontend.cpp:2058
+#: src/port/sdl/frontend.cpp:2071
+msgid "Quit"
+msgstr "退出"
+
+#: src/port/sdl/frontend.cpp:2051 src/port/sdl/frontend.cpp:2063
+msgid "Swap CD"
+msgstr "切換 CD"
+
+#: src/port/sdl/frontend.cpp:2052 src/port/sdl/frontend.cpp:2064
+msgid "Load state"
+msgstr "加載自動存檔"
+
+#: src/port/sdl/frontend.cpp:2053 src/port/sdl/frontend.cpp:2065
+msgid "Save state"
+msgstr "保存自動存檔"
+
+#: src/port/sdl/frontend.cpp:2069
+msgid "Cheats"
+msgstr "金手指"
+
+#: src/port/sdl/port.cpp:930
+msgid "/usr/share/fonts/dejavu/DejaVuSansMono.ttf"
+msgstr "/usr/share/fonts/dejavu/DejaVuSansMono.ttf|/usr/share/gmenunx/skins/Default/font.ttf"

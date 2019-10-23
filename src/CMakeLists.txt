@@ -7,6 +7,8 @@ set(SPU spu_pcsxrearmed)
 
 find_package(SDL REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(Intl REQUIRED)
 
 set(SRC_FILES
     r3000a.cpp misc.cpp plugins.cpp psxmem.cpp psxhw.cpp
@@ -22,6 +24,8 @@ set(SRC_FILES
     spu/${SPU}/spu.c
     port/${PORT}/port.cpp
     port/${PORT}/frontend.cpp
+    port/${PORT}/ttf.cpp
+    port/${PORT}/i18n.cpp
     )
 
 if(USE_GPULIB)
@@ -91,6 +95,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE XA_HACK
     "INLINE=static __inline__" "asm=__asm__ __volatile__"
     ${GPU_FLAGS} ${SPU_FLAGS} ${EXTRA_FLAGS})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wno-format-truncation)
-target_include_directories(${PROJECT_NAME} PRIVATE ${SDL_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${Intl_INCLUDE_DIRS}
     . spu/${SPU} gpu/${GPU} port/${PORT} plugin_lib external_lib)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL_LIBRARY} ${ZLIB_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL_LIBRARY} ${FREETYPE_LIBRARIES} ${ZLIB_LIBRARIES} ${Intl_LIBRARIES})

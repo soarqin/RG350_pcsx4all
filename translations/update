@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+xgettext src/port/sdl/*.cpp -k_ --no-wrap --add-comments --add-location --no-wrap --copyright-holder="pcsx4all Team" --package-name="pcsx4all" --package-version="2.4" --msgid-bugs-address="soarchin@gmail.com" -o translations/messages.pot
+
+lang_list=$(cut -d' ' -f1 translations/locales)
+for v in $lang_list; do
+  if [ ! -f translations/${v}.po ]; then
+    echo "Creating ${v}.po..."
+    msginit --no-wrap -l ${v}.UTF-8 -i translations/messages.pot -o translations/${v}.po
+  else
+    echo -n "Updating ${v}.po"
+    msgmerge --no-wrap -U translations/${v}.po translations/messages.pot
+  fi
+done

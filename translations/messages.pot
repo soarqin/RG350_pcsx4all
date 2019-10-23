@@ -1,0 +1,348 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR pcsx4all Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pcsx4all 2.4\n"
+"Report-Msgid-Bugs-To: soarchin@gmail.com\n"
+"POT-Creation-Date: 2019-10-30 20:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/port/sdl/frontend.cpp:55
+msgid "on"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:55 src/port/sdl/frontend.cpp:1347
+#: src/port/sdl/frontend.cpp:1589
+msgid "off"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:268
+msgid "error opening directory"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:349
+msgid "LOADING"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:371
+msgid "DIR"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:481
+msgid "SAVING"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:496
+msgid "SAVE FAILED"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:497
+msgid "Out of disk space?"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:545
+msgid "No screenshot"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:546
+msgid "  available  "
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:642
+#, c-format
+msgid "Used  slot %d"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:644
+#, c-format
+msgid "Empty slot %d"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:827
+#, c-format
+msgid "Load slot %d"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:907
+msgid "Multi-CD image detected:"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:916
+#, c-format
+msgid "CD %d"
+msgstr ""
+
+#. print indication of which CD is already inserted
+#: src/port/sdl/frontend.cpp:920
+msgid " (inserted)"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1033
+msgid "int"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1033
+msgid "rec"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1113
+msgid "Skip BIOS logos at startup"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1140
+msgid "Analog Stick -> Arrow Keys"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1163 src/port/sdl/frontend.cpp:1753
+msgid "Analog Mode"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1171
+#, c-format
+msgid "Digital"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1173
+#, c-format
+msgid "DualAnalog"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1175
+#, c-format
+msgid "DualShock"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1190
+msgid "Parasite Eve 2, Vandal Hearts 1/2 Fix"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1347 src/port/sdl/frontend.cpp:1589
+msgid "auto"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1369
+msgid "hardware"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1369
+msgid "nearest"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1379
+msgid "Hardware, POWER+A to switch aspect"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1382
+msgid "Nearest filter"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1660
+msgid "none"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1661
+msgid "simple"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1662
+msgid "gaussian"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1663
+msgid "cubic"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1746
+msgid "Emulation core"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1747
+msgid "Cycle multiplier"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1749
+msgid "HLE emulated BIOS"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1750
+msgid "Set BIOS file"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1751
+msgid "Skip BIOS logos"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1752
+msgid "Map L-stick to Dpad"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1754
+msgid "RCntFix"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1755
+msgid "VSyncWA"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1756
+msgid "Memory card Slot1"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1757
+msgid "Memory card Slot2"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1758 src/port/sdl/frontend.cpp:1791
+#: src/port/sdl/frontend.cpp:1817
+msgid "Restore defaults"
+msgstr ""
+
+#. Not working with gpulib yet
+#: src/port/sdl/frontend.cpp:1775
+msgid "Show FPS"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1776
+msgid "Frame limiter"
+msgstr ""
+
+#. Only working with gpulib
+#: src/port/sdl/frontend.cpp:1779
+msgid "Frame skip"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1780
+msgid "Video Scaling"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1783
+msgid "NTSC Resolution Fix"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1784
+msgid "Interlace"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1785
+msgid "Dithering"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1786
+msgid "Lighting"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1787
+msgid "Fast lighting"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1788
+msgid "Blending"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1806
+msgid "XA audio"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1807
+msgid "CDDA audio"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1808
+msgid "Audio sync"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1809
+msgid "SPU updates per frame"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1810
+msgid "Forced XA updates"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1811
+msgid "IRQ fix"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1813
+msgid "Interpolation"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1814
+msgid "Reverb"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:1815
+msgid "Master volume"
+msgstr ""
+
+#. add disc id display for confirming cheat filename
+#: src/port/sdl/frontend.cpp:1909
+msgid "Disc ID:"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2023
+msgid "English"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2030
+msgid "Load game"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2031 src/port/sdl/frontend.cpp:2056
+#: src/port/sdl/frontend.cpp:2068
+msgid "Core settings"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2032 src/port/sdl/frontend.cpp:2054
+#: src/port/sdl/frontend.cpp:2066
+msgid "GPU settings"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2033 src/port/sdl/frontend.cpp:2055
+#: src/port/sdl/frontend.cpp:2067
+msgid "SPU settings"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2034
+msgid "Credits"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2035 src/port/sdl/frontend.cpp:2057
+#: src/port/sdl/frontend.cpp:2070
+msgid "Language"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2036 src/port/sdl/frontend.cpp:2058
+#: src/port/sdl/frontend.cpp:2071
+msgid "Quit"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2051 src/port/sdl/frontend.cpp:2063
+msgid "Swap CD"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2052 src/port/sdl/frontend.cpp:2064
+msgid "Load state"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2053 src/port/sdl/frontend.cpp:2065
+msgid "Save state"
+msgstr ""
+
+#: src/port/sdl/frontend.cpp:2069
+msgid "Cheats"
+msgstr ""
+
+#: src/port/sdl/port.cpp:930
+msgid "/usr/share/fonts/dejavu/DejaVuSansMono.ttf"
+msgstr ""

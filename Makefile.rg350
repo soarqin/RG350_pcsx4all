@@ -22,7 +22,7 @@ SPU   = spu_pcsxrearmed
 RECOMPILER = mips
 
 RM     = rm -f
-MD     = mkdir
+MD     = mkdir -p
 CC     = mipsel-linux-gcc
 CXX    = mipsel-linux-g++
 LD     = mipsel-linux-g++
@@ -31,8 +31,11 @@ SYSROOT     := $(shell $(CC) --print-sysroot)
 SDL_CONFIG  := $(SYSROOT)/usr/bin/sdl-config
 SDL_CFLAGS  := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS    := $(shell $(SDL_CONFIG) --libs)
+FREETYPE_CONFIG  := $(SYSROOT)/usr/bin/freetype-config
+FREETYPE_CFLAGS  := $(shell $(FREETYPE_CONFIG) --cflags)
+FREETYPE_LIBS    := $(shell $(FREETYPE_CONFIG) --libs)
 
-LDFLAGS := $(SDL_LIBS) -lSDL_mixer -lSDL_image -lrt -lz -lshake
+LDFLAGS := $(SDL_LIBS) $(FREETYPE_LIBS) -lshake -lrt -lz -lintl
 
 ifdef A320
 	C_ARCH = -mips32 -msoft-float -DGCW_ZERO -DRG350 -DDYNAREC_SKIP_DCACHE_FLUSH -DTMPFS_MIRRORING -DTMPFS_DIR=\"/tmp\"
@@ -57,7 +60,7 @@ else
 	#  mirror PS1 address space.
 	#C_ARCH  += -DMMAP_TO_ADDRESS_ZERO
 	#LDFLAGS += -Wl,-Ttext-segment=0x40000000
-	LDFLAGS = $(SDL_LIBS) -lrt -lz -Wl,--as-needed -Wl,--gc-sections -s -lshake
+	LDFLAGS = $(SDL_LIBS) $(FREETYPE_LIBS) -lshake -lrt -lz -lintl -Wl,--as-needed -Wl,--gc-sections -s
 	LDFLAGS += -flto
 	# Furthermore, div-by-zero checks are disabled (helps software rendering)
 	C_ARCH  += -mno-check-zero-division
@@ -72,7 +75,7 @@ CFLAGS := $(C_ARCH) -mplt -mno-shared -ggdb3 -O4 -fexpensive-optimizations -flto
 	-Isrc/external_lib \
 	-DXA_HACK \
 	-DINLINE="static __inline__" -Dasm="__asm__ __volatile__" \
-	$(SDL_CFLAGS)
+	$(SDL_CFLAGS) $(FREETYPE_CFLAGS)
 
 # Convert plugin names to uppercase and make them CFLAG defines
 CFLAGS += -D$(shell echo $(GPU) | tr a-z A-Z)
@@ -87,7 +90,7 @@ OBJDIRS = obj obj/gpu obj/gpu/$(GPU) obj/spu obj/spu/$(SPU) \
 	  obj/port obj/port/$(PORT) \
 	  obj/plugin_lib obj/external_lib
 
-all: maketree $(TARGET)
+all: maketree hints
 
 OBJS = \
 	obj/r3000a.o obj/misc.o obj/plugins.o obj/psxmem.o obj/psxhw.o \
@@ -129,6 +132,8 @@ OBJS += obj/spu/$(SPU)/spu.o
 
 OBJS += obj/port/$(PORT)/port.o
 OBJS += obj/port/$(PORT)/frontend.o
+OBJS += obj/port/$(PORT)/ttf.o
+OBJS += obj/port/$(PORT)/i18n.o
 
 OBJS += obj/plugin_lib/perfmon.o
 
@@ -207,12 +212,17 @@ endif
 # spu_pcsxrearmed END
 #******************************************
 
-CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
+CXXFLAGS := $(CFLAGS) -std=gnu++11 -fno-rtti -fno-exceptions
+
+LOCALE_SRC := $(wildcard translations/*.po)
+LOCALES := $(patsubst translations/%.po, locale/%/LC_MESSAGES/pcsx4all.mo, $(LOCALE_SRC))
 
 $(TARGET): $(OBJS)
 	@echo Linking $(TARGET)...
 	$(HIDECMD)$(LD) $(OBJS) $(LDFLAGS) -o $@
 	@echo
+
+hints: $(TARGET) $(LOCALES)
 ifeq ($(DEV),1)
 	@echo "-> WARNING: This is a development build.                                  "
 	@echo "            Mapping to virtual address zero is disabled. As a result,     "
@@ -225,6 +235,7 @@ else
 	@echo "   If developing/debugging, you can pass DEV=1 on make command-line to    "
 	@echo "   disable these behaviors. Be sure to do a clean rebuild.                "
 endif
+	@echo
 
 obj/%.o: src/%.c
 	@echo Compiling $<...
@@ -242,11 +253,16 @@ obj/%.o: src/%.S
 	@echo Compiling $<...
 	$(HIDECMD)$(CXX) $(CFLAGS) -c $< -o $@
 
+locale/%/LC_MESSAGES/pcsx4all.mo: translations/%.po
+	@echo Creating locale file $@...
+	$(HIDECMD)$(MD) $(@D)
+	$(HIDECMD)msgfmt --no-hash -c $< -o $@
+
 $(sort $(OBJDIRS)):
 	$(HIDECMD)$(MD) $@
 
 maketree: $(sort $(OBJDIRS))
 
 clean:
-	$(RM) -r obj
+	$(RM) -r obj locale
 	$(RM) $(TARGET)
