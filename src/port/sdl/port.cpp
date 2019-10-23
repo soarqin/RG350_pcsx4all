@@ -30,6 +30,13 @@
 #include "gpu/gpu_unai/gpu.h"
 #endif
 
+#include "ttf.h"
+#include "i18n.h"
+
+#include <libintl.h>
+
+#define _(s) gettext(s)
+
 #ifdef RUMBLE
 #include <shake.h>
 Shake_Device *device;
@@ -56,6 +63,10 @@ enum {
 
 	DKEY_TOTAL
 };
+
+static TTF::Font *ttf_font = NULL;
+I18n i18n;
+int language_index = 0;
 
 static SDL_Surface *screen;
 unsigned short *SCREEN;
@@ -103,6 +114,7 @@ static void pcsx4all_exit(void)
 	// Store config to file
 	config_save();
 
+	if (ttf_font) delete ttf_font;
 #ifdef GCW_ZERO
 	set_keep_aspect_ratio(last_keep_aspect);
 #endif
@@ -245,7 +257,16 @@ void config_load()
 			break;
 		}
 
-		if (!strcmp(line, "Xa")) {
+		if (!strcmp(line, "Language")) {
+			int len = strlen(arg);
+			if (len == 0 || len > sizeof(Config.Language) - 1) {
+				continue;
+			}
+			if (arg[len-1] == '\n') {
+				arg[len-1] = '\0';
+			}
+			strcpy(Config.Language, arg);
+		} else if (!strcmp(line, "Xa")) {
 			sscanf(arg, "%d", &value);
 			Config.Xa = value;
 		} else if (!strcmp(line, "Mdec")) {
@@ -426,6 +447,7 @@ void config_save()
 	}
 
 	fprintf(f, "CONFIG_VERSION %d\n"
+		   "Language %s\n"
 		   "Xa %d\n"
 		   "Mdec %d\n"
 		   "PsxAuto %d\n"
@@ -448,7 +470,8 @@ void config_save()
 		   "FrameLimit %d\n"
 		   "FrameSkip %d\n"
 		   "VideoScaling %d\n",
-		   CONFIG_VERSION, Config.Xa, Config.Mdec, Config.PsxAuto, Config.Cdda,
+		   CONFIG_VERSION,
+		   Config.Language, Config.Xa, Config.Mdec, Config.PsxAuto, Config.Cdda,
 		   Config.HLE, Config.SlowBoot, Config.AnalogArrow, Config.AnalogMode,
 		   Config.RCntFix, Config.VSyncWA, Config.Cpu, Config.PsxType,
 		   Config.McdSlot1, Config.McdSlot2, Config.SpuIrq, Config.SyncAudio,
@@ -767,7 +790,7 @@ unsigned short pad_read(int num)
 void video_flip(void)
 {
 	if (emu_running && Config.ShowFps) {
-		port_printf(5, 5, pl_data.stats_msg);
+		port_printf_pixel(5, 5, pl_data.stats_msg);
 	}
 
 	if (SDL_MUSTLOCK(screen))
@@ -897,6 +920,26 @@ void Rumble_Init() {
 #endif
 }
 
+void font_init() {
+	const char *font_files = _("/usr/share/fonts/dejavu/DejaVuSansMono.ttf");
+	int pos = 0;
+	if (ttf_font) delete ttf_font;
+	ttf_font = new TTF::Font(12, 0, screen);
+	while (pos >= 0) {
+		char font_filename[MAXPATHLEN];
+		const char *delim = strchr(font_files + pos, '|');
+		if (delim == NULL) {
+			strcpy(font_filename, font_files + pos);
+			pos = -1;
+		} else {
+			strncpy(font_filename, font_files + pos, delim - font_files - pos);
+			font_filename[delim - font_files - pos] = 0;
+			pos = delim - font_files + 1;
+		}
+		ttf_font->add(font_filename);
+	}
+}
+
 void update_window_size(int w, int h, bool ntsc_fix)
 {
 	if (Config.VideoScaling != 0) return;
@@ -957,10 +1000,10 @@ void update_window_size(int w, int h, bool ntsc_fix)
 
 int main (int argc, char **argv)
 {
-	char filename[256];
+	char filename[256] = "";
 	const char *cdrfilename = GetIsoFile();
 
-	filename[0] = '\0'; /* Executable file name */
+	i18n.init();
 
 	setup_paths();
 
@@ -1093,6 +1136,19 @@ int main (int argc, char **argv)
 
 	// Load config from file.
 	config_load();
+
+	if (Config.Language[0]) {
+		const auto &l = i18n.getList();
+		for (size_t i = 0; i < l.size(); ++i) {
+			if (l[i].locale == Config.Language) {
+				language_index = (int)i;
+				break;
+			}
+		}
+		if (language_index)
+			i18n.apply(Config.Language);
+	}
+
 	// Check if LastDir exists.
 	probe_lastdir();
 
@@ -1444,9 +1500,23 @@ int main (int argc, char **argv)
 			SDL_LockSurface(screen);
 
 		SCREEN = (Uint16 *) screen->pixels;
+
+#if !defined(GCW_ZERO) && defined(USE_BGR15)
+		screen->format->Rshift = 0;
+		screen->format->Gshift = 5;
+		screen->format->Bshift = 10;
+		screen->format->Rmask = 0x1Fu;
+		screen->format->Gmask = 0x1Fu<<5u;
+		screen->format->Bmask = 0x1Fu<<10u;
+		screen->format->Amask = 0;
+		screen->format->Ashift = 0;
+		screen->format_version++;
+#endif
 	} else {
 		update_window_size(320, 240, false);
 	}
+
+	font_init();
 
 	if (argc < 2 || cdrfilename[0] == '\0') {
 		// Enter frontend main-menu:
@@ -1535,7 +1605,7 @@ void wait_ticks(unsigned s)
 	SDL_Delay(s);
 }
 
-void port_printf(int x, int y, const char *text)
+void port_printf_pixel(int x, int y, const char *text)
 {
 	static const unsigned char fontdata8x8[] =
 	{
@@ -1605,11 +1675,11 @@ void port_printf(int x, int y, const char *text)
 		0x00,0x00,0x76,0xDC,0x00,0x00,0x00,0x00,0x10,0x28,0x10,0x54,0xAA,0x44,0x00,0x00,
 	};
 	unsigned short *screen = (SCREEN + x + y * SCREEN_WIDTH);
-	int len = strlen(text);
-	for (int i = 0; i < len; i++) {
+	while (*text) {
 		int pos = 0;
+		const unsigned char *dataptr = &fontdata8x8[(*text++)*8];
 		for (int l = 0; l < 8; l++) {
-			unsigned char data = fontdata8x8[((text[i])*8)+l];
+			unsigned char data = *dataptr++;
 			if (data & 0x80u) {
 				screen[pos + 0] = 0xFFFFu;
 				screen[pos + 1 + SCREEN_WIDTH] = 0;
@@ -1646,4 +1716,9 @@ void port_printf(int x, int y, const char *text)
 		}
 		screen += 8;
 	}
+}
+
+void port_printf(int x, int y, const char *text)
+{
+	ttf_font ? ttf_font->render(screen, x, y, text) : port_printf_pixel(x, y, text);
 }

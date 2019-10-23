@@ -32,7 +32,7 @@
 #include "gte.h"
 #include "psxevents.h"
 
-PcsxConfig Config;
+PcsxConfig Config = {};
 R3000Acpu *psxCpu=NULL;
 psxRegisters psxRegs;
 
