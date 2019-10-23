@@ -31,8 +31,11 @@ SYSROOT     := $(shell $(CC) --print-sysroot)
 SDL_CONFIG  := $(SYSROOT)/usr/bin/sdl-config
 SDL_CFLAGS  := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS    := $(shell $(SDL_CONFIG) --libs)
+FREETYPE_CONFIG  := $(SYSROOT)/usr/bin/freetype-config
+FREETYPE_CFLAGS  := $(shell $(FREETYPE_CONFIG) --cflags)
+FREETYPE_LIBS    := $(shell $(FREETYPE_CONFIG) --libs)
 
-LDFLAGS := $(SDL_LIBS) -lSDL_mixer -lSDL_image -lrt -lz -lshake
+LDFLAGS := $(SDL_LIBS) $(FREETYPE_LIBS) -lrt -lz -lshake
 
 ifdef A320
 	C_ARCH = -mips32 -msoft-float -DGCW_ZERO -DRG350 -DDYNAREC_SKIP_DCACHE_FLUSH -DTMPFS_MIRRORING -DTMPFS_DIR=\"/tmp\"
@@ -57,7 +60,7 @@ else
 	#  mirror PS1 address space.
 	#C_ARCH  += -DMMAP_TO_ADDRESS_ZERO
 	#LDFLAGS += -Wl,-Ttext-segment=0x40000000
-	LDFLAGS = $(SDL_LIBS) -lrt -lz -Wl,--as-needed -Wl,--gc-sections -s -lshake
+	LDFLAGS = $(SDL_LIBS) $(FREETYPE_LIBS) -lrt -lz -Wl,--as-needed -Wl,--gc-sections -s -lshake
 	# Furthermore, div-by-zero checks are disabled (helps software rendering)
 	C_ARCH  += -mno-check-zero-division
 endif
@@ -71,7 +74,7 @@ CFLAGS := $(C_ARCH) -mplt -mno-shared -ggdb3 -O3 -DUSE_BGR15 -DTHREAD_ENABLED \
 	-Isrc/external_lib \
 	-DXA_HACK \
 	-DINLINE="static __inline__" -Dasm="__asm__ __volatile__" \
-	$(SDL_CFLAGS)
+	$(SDL_CFLAGS) $(FREETYPE_CFLAGS)
 
 # Convert plugin names to uppercase and make them CFLAG defines
 CFLAGS += -D$(shell echo $(GPU) | tr a-z A-Z)
@@ -128,6 +131,7 @@ OBJS += obj/spu/$(SPU)/spu.o
 
 OBJS += obj/port/$(PORT)/port.o
 OBJS += obj/port/$(PORT)/frontend.o
+OBJS += obj/port/$(PORT)/ttf.o
 
 OBJS += obj/plugin_lib/perfmon.o
 
@@ -206,7 +210,7 @@ endif
 # spu_pcsxrearmed END
 #******************************************
 
-CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
+CXXFLAGS := $(CFLAGS) -std=gnu++11 -fno-rtti -fno-exceptions
 
 $(TARGET): $(OBJS)
 	@echo Linking $(TARGET)...

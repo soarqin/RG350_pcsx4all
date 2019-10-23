@@ -2,6 +2,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#if defined(RG350)
+#include <libgen.h>
+#endif
 
 #include "port.h"
 #include "r3000a.h"
@@ -28,6 +31,10 @@
 
 #ifdef GPU_UNAI
 #include "gpu/gpu_unai/gpu.h"
+#endif
+
+#if defined(RG350) || !defined(GCW_ZERO)
+#include "ttf.h"
 #endif
 
 #ifdef RUMBLE
@@ -60,6 +67,7 @@ enum {
 static SDL_Surface *screen;
 unsigned short *SCREEN;
 int SCREEN_WIDTH = 640, SCREEN_HEIGHT = 480;
+TTF::Font *ttf_font;
 
 static bool pcsx4all_initted = false;
 static bool emu_running = false;
@@ -103,6 +111,7 @@ static void pcsx4all_exit(void)
 	// Store config to file
 	config_save();
 
+	delete ttf_font;
 #ifdef GCW_ZERO
 	set_keep_aspect_ratio(last_keep_aspect);
 #endif
@@ -767,7 +776,7 @@ unsigned short pad_read(int num)
 void video_flip(void)
 {
 	if (emu_running && Config.ShowFps) {
-		port_printf(5, 5, pl_data.stats_msg);
+		port_printf_pixel(5, 5, pl_data.stats_msg);
 	}
 
 	if (SDL_MUSTLOCK(screen))
@@ -1444,6 +1453,18 @@ int main (int argc, char **argv)
 			SDL_LockSurface(screen);
 
 		SCREEN = (Uint16 *) screen->pixels;
+
+#if !defined(GCW_ZERO) && defined(USE_BGR15)
+		screen->format->Rshift = 0;
+		screen->format->Gshift = 5;
+		screen->format->Bshift = 10;
+		screen->format->Rmask = 0x1Fu;
+		screen->format->Gmask = 0x1Fu<<5u;
+		screen->format->Bmask = 0x1Fu<<10u;
+		screen->format->Amask = 0;
+		screen->format->Ashift = 0;
+		screen->format_version++;
+#endif
 	} else {
 		update_window_size(320, 240, false);
 	}
@@ -1457,6 +1478,16 @@ int main (int argc, char **argv)
 		}
 	}
 
+
+#if defined(RG350)
+	ttf_font = new TTF::Font(12, 0, screen);
+    ttf_font->add("/usr/share/fonts/dejavu/DejaVuSansMono.ttf");
+    ttf_font->add("/usr/share/gmenunx/skins/Default/font.ttf");
+#elif !defined(GCW_ZERO)
+	ttf_font = new TTF::Font(12, 0, screen);
+	ttf_font->add("en.ttf");
+	ttf_font->add("cjk.ttf");
+#endif
 
 	if (psxInit() == -1) {
 		printf("PSX emulator couldn't be initialized.\n");
@@ -1535,7 +1566,7 @@ void wait_ticks(unsigned s)
 	SDL_Delay(s);
 }
 
-void port_printf(int x, int y, const char *text)
+void port_printf_pixel(int x, int y, const char *text)
 {
 	static const unsigned char fontdata8x8[] =
 	{
@@ -1605,11 +1636,11 @@ void port_printf(int x, int y, const char *text)
 		0x00,0x00,0x76,0xDC,0x00,0x00,0x00,0x00,0x10,0x28,0x10,0x54,0xAA,0x44,0x00,0x00,
 	};
 	unsigned short *screen = (SCREEN + x + y * SCREEN_WIDTH);
-	int len = strlen(text);
-	for (int i = 0; i < len; i++) {
+	while (*text) {
 		int pos = 0;
+		const unsigned char *dataptr = &fontdata8x8[(*text++)*8];
 		for (int l = 0; l < 8; l++) {
-			unsigned char data = fontdata8x8[((text[i])*8)+l];
+			unsigned char data = *dataptr++;
 			if (data & 0x80u) {
 				screen[pos + 0] = 0xFFFFu;
 				screen[pos + 1 + SCREEN_WIDTH] = 0;
@@ -1646,4 +1677,13 @@ void port_printf(int x, int y, const char *text)
 		}
 		screen += 8;
 	}
+}
+
+void port_printf(int x, int y, const char *text)
+{
+#if defined(GCW_ZERO) && !defined(RG350)
+	port_printf_pixel(x, y, text);
+#else
+	ttf_font ? ttf_font->render(screen, x, y, text) : port_printf_pixel(x, y, text);
+#endif
 }
