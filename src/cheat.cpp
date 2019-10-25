@@ -58,9 +58,13 @@ void cheat_load(void)
 		char *buf = filebuf + buf_pos;
 		if (*buf == 0) break;
 		int token_pos = strcspn(buf, "\r\n");
-		buf[token_pos] = 0;
-		buf_pos += token_pos + 1;
-		while(filebuf[buf_pos] == '\r' || filebuf[buf_pos] == '\n') ++buf_pos;
+		if (buf[token_pos] == 0)
+			buf_pos += token_pos;
+		else {
+			buf[token_pos] = 0;
+			buf_pos += token_pos + 1;
+			while(filebuf[buf_pos] == '\r' || filebuf[buf_pos] == '\n') ++buf_pos;
+		}
 		while (*buf == ' ' || *buf == '\t') ++buf;
 		if (*buf == '#') {
 			int pos;
@@ -127,7 +131,6 @@ void cheat_load(void)
 			ct->entries[i].cont_enabled = 0;
 		}
 	}
-	fclose(f);
 }
 
 void cheat_unload(void)
