@@ -27,11 +27,7 @@
 
 #define GPU_INLINE static inline __attribute__((always_inline))
 
-#ifdef TIME_IN_MSEC
 #define TPS 1000
-#else
-#define TPS 1000000
-#endif
 
 #define IS_PAL (gpu_unai.GPU_GP1&(0x08<<17))
 

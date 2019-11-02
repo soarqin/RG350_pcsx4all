@@ -1522,20 +1522,17 @@ int main (int argc, char **argv)
 
 unsigned get_ticks(void)
 {
-#ifdef TIME_IN_MSEC
-	return SDL_GetTicks();
-#else
-	return ((((unsigned long long)clock())*1000000ULL)/((unsigned long long)CLOCKS_PER_SEC));
+#ifndef CLOCK_MONOTONIC_COARSE
+#define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 #endif
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC_COARSE, &ts);
+	return ts.tv_sec * 1000U + ts.tv_nsec / 1000000U;
 }
 
 void wait_ticks(unsigned s)
 {
-#ifdef TIME_IN_MSEC
 	SDL_Delay(s);
-#else
-	SDL_Delay(s/1000);
-#endif
 }
 
 void port_printf(int x, int y, const char *text)

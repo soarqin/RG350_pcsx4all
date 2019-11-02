@@ -4,7 +4,7 @@ if("${CROSS}" STREQUAL "")
   set(CROSS mipsel-linux-)
 endif ()
 
-set(MIPS_FLAGS "${MIPS_FLAGS} -mips32r2 -DSHMEM_MIRRORING -DTIME_IN_MSEC -mno-abicalls -fno-PIC -mno-check-zero-division")
+set(MIPS_FLAGS "${MIPS_FLAGS} -mips32r2 -DSHMEM_MIRRORING -mno-abicalls -fno-PIC -mno-check-zero-division")
 
 if("${MODEL}" STREQUAL "rs97")
   set(MIPS_FLAGS "${MIPS_FLAGS} -DRS97 -DGCW_ZERO")

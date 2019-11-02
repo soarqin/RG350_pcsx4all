@@ -235,11 +235,7 @@ static int cheat_run_code(const cheat_line_t* lines, int total, int* mcode_run)
 	case 0xC1:
 		if (code2 > 0) {
 			*mcode_run = 1;
-#ifdef TIME_IN_MSEC
 			next_ticks = get_ticks() + code2;
-#else
-			next_ticks = get_ticks() / 1000 + code2;
-#endif
 			return -2;
 		}
 		return 1;
@@ -289,11 +285,7 @@ void cheat_apply(void)
 	u32 curr_ticks;
 	int i;
 	if (!ct || !ct->num_entries) return;
-#ifdef TIME_IN_MSEC
 	curr_ticks = get_ticks();
-#else
-	curr_ticks = get_ticks() / 1000;
-#endif
 	if (curr_ticks < next_ticks) return;
 	next_ticks = curr_ticks + run_interval;
 	for (i = 0; i < ct->num_entries; ++i) {
