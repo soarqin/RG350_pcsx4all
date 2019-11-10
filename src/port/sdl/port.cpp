@@ -1610,14 +1610,38 @@ void port_printf(int x, int y, const char *text)
 		int pos = 0;
 		for (int l = 0; l < 8; l++) {
 			unsigned char data = fontdata8x8[((text[i])*8)+l];
-			if (data&0x80u) screen[pos+0] = ~screen[pos+0];
-			if (data&0x40u) screen[pos+1] = ~screen[pos+1];
-			if (data&0x20u) screen[pos+2] = ~screen[pos+2];
-			if (data&0x10u) screen[pos+3] = ~screen[pos+3];
-			if (data&0x08u) screen[pos+4] = ~screen[pos+4];
-			if (data&0x04u) screen[pos+5] = ~screen[pos+5];
-			if (data&0x02u) screen[pos+6] = ~screen[pos+6];
-			if (data&0x01u) screen[pos+7] = ~screen[pos+7];
+			if (data & 0x80u) {
+				screen[pos + 0] = 0xFFFFu;
+				screen[pos + 1 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x40u) {
+				screen[pos + 1] = 0xFFFFu;
+				screen[pos + 2 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x20u) {
+				screen[pos + 2] = 0xFFFFu;
+				screen[pos + 3 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x10u) {
+				screen[pos + 3] = 0xFFFFu;
+				screen[pos + 4 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x08u) {
+				screen[pos + 4] = 0xFFFFu;
+				screen[pos + 5 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x04u) {
+				screen[pos + 5] = 0xFFFFu;
+				screen[pos + 6 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x02u) {
+				screen[pos + 6] = 0xFFFFu;
+				screen[pos + 7 + SCREEN_WIDTH] = 0;
+			}
+			if (data & 0x01u) {
+				screen[pos + 7] = 0xFFFFu;
+				screen[pos + 8 + SCREEN_WIDTH] = 0;
+			}
 			pos += SCREEN_WIDTH;
 		}
 		screen += 8;
