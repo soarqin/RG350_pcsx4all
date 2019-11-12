@@ -297,8 +297,8 @@ static void recDIV()
 	if (rt_const)
 	{
 		// Check rs_const before using rs_val value here!
-		u32 rs_val = GetConst(_Rs_);
-		u32 rt_val = GetConst(_Rt_);
+		s32 rs_val = GetConst(_Rs_);
+		s32 rt_val = GetConst(_Rt_);
 
 		if (!rt_val) {
 			// If divisor operand is const 0:
