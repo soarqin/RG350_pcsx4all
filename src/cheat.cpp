@@ -19,6 +19,21 @@ static u32 next_ticks = 0u;
 
 extern char cheatsdir[PATH_MAX];
 
+char* to_upper(char *str){
+	char c;
+	int i = 0;
+	while (str[i] != '\0')
+	{
+		c = str[i];
+		if (c >= 'a' && c <= 'z')
+		{
+			str[i] = c - 32;
+		}
+		i++;
+	}
+	return str;
+}
+
 void cheat_load(void)
 {
 	char cheat_filename[PATH_MAX];
@@ -27,7 +42,7 @@ void cheat_load(void)
 	int i, disableall, buf_pos = 0;
 	cheat_entry_t* entry = NULL;
 	cheat_unload();
-	snprintf(cheat_filename, sizeof(cheat_filename), "%s/%s.txt", cheatsdir, CdromId);
+	snprintf(cheat_filename, sizeof(cheat_filename), "%s/%s.txt", cheatsdir, to_upper(CdromId));
 	f = fopen(cheat_filename, "r");
 	if (f) {
 		fseeko(f, 0, SEEK_END);
@@ -42,7 +57,7 @@ void cheat_load(void)
 		snprintf(cheat_filename, sizeof(cheat_filename), "%s/cheats.zip", cheatsdir);
 		unzFile uf = unzOpen(cheat_filename);
 		if (uf == NULL) return;
-		snprintf(cheat_filename, sizeof(cheat_filename), "%s.txt", CdromId);
+		snprintf(cheat_filename, sizeof(cheat_filename), "%s.txt", to_upper(CdromId));
 		if (unzLocateFile(uf, cheat_filename, 2) != UNZ_OK || unzGetCurrentFileInfo(uf, &finfo, NULL, 0, NULL, 0, NULL, 0) != UNZ_OK || unzOpenCurrentFile(uf) != UNZ_OK) {
 			unzClose(uf);
 			return;
